@@ -332,3 +332,98 @@ classDiagram
     Game "1" --* "1" LeaderBoard
 
 ```
+
+- But here in the LeaderBoard, the info is not proper, it is showing the player rank.
+
+```mermaid
+classDiagram
+    class Game {
+        - Board board
+        - Player[] players
+        - Dice[] dices
+        - LeaderBoard leaderboard
+        - GameStatus gameStatus
+
+        + createGame(GameRequestDTO)
+        + int roll()
+        + makemove(Player, Piece)
+    }
+
+    class Board {
+        - int size
+        - Cell[] cells
+
+
+    }
+
+    class Snake {
+        + int moveNext()
+    }
+
+    class Ladder {
+        + int moveNext()
+    }
+
+    Cell <|-- Snake
+    Cell <|-- Ladder
+    Cell <|-- BasicCell
+
+    Game "1" --* "1" Board
+
+
+    class Player {
+        - String name
+        - Piece[] pieces
+    }
+
+    Game "1" --* "M" Player
+
+    class Piece {
+        - String color
+    }
+
+    class Dice {
+        - int faces
+    }
+
+    Game "1" --* "M" Dice
+
+    class GameStatus {
+        <<Enumeration>>
+        INPROGRESS
+        FINISHED
+    }
+
+    Game "1" --* "1" GameStatus
+
+    class Cell {
+        <<abstract>>
+        - int position
+        - Piece[] pieces
+    }
+
+    class BasicCell {
+        + int moveNext()
+    }
+
+    Board "1" --* "M" Cell
+
+    Cell "1" --* "M" Piece
+
+    Player "1" --* "M" Piece
+
+
+
+    class LeaderBoard {
+        -PlayerRanking[] playerRankings
+    }
+
+    class PlayerRanking {
+        - Player player
+        - int Rank
+    }
+
+    LeaderBoard "1" --* "M" PlayerRanking
+
+    Game "1" --* "1" LeaderBoard
+```
